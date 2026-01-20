@@ -43,7 +43,7 @@ export function HomeHeader({ data }: Props) {
             name: "arrow-downward",
             color: colors.red[400],
           }}
-          isLeft
+          isRight
         />
       </View>
     </LinearGradient>
