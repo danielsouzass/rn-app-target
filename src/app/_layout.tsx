@@ -8,6 +8,9 @@ import {
 } from "@expo-google-fonts/inter";
 import { Loading } from "@/components/Loading";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { migrate } from "@/database/migrate";
+import { SQLiteProvider } from "expo-sqlite";
+import { Suspense } from "react";
 
 export default function Layout() {
   const [fontsLoaded] = useFonts({
@@ -21,13 +24,17 @@ export default function Layout() {
   }
 
   return (
-    <SafeAreaProvider>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          contentStyle: { backgroundColor: colors.white },
-        }}
-      />
-    </SafeAreaProvider>
+    <Suspense fallback={<Loading />}>
+      <SQLiteProvider databaseName="target.db" onInit={migrate} useSuspense>
+        <SafeAreaProvider>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: { backgroundColor: colors.white },
+            }}
+          />
+        </SafeAreaProvider>
+      </SQLiteProvider>
+    </Suspense>
   );
 }
